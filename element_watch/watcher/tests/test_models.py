@@ -30,3 +30,9 @@ class TestWatchedElement(TestCase):
     def test_absolute_url(self):
         elem = WatchedElement.objects.all()[0]
         self.assertEqual(elem.get_absolute_url(), f'/watched-element/{elem.id}/')
+
+    def test_next_scheduled_update(self):
+        elem = WatchedElement.objects.all()[0]
+        elem.last_checked = timezone.now() - timedelta(minutes=10)
+        expected = elem.last_checked + timedelta(hours=elem.check_interval_days)
+        self.assertEqual(elem.next_scheduled_update(), expected)

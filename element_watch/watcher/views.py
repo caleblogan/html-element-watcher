@@ -8,7 +8,10 @@ from .models import WatchedElement
 
 @login_required
 def home(request):
-    return render(request, 'watcher/home.html')
+    context = {
+        'watched_elements': WatchedElement.objects.filter(user=request.user)
+    }
+    return render(request, 'watcher/home.html', context=context)
 
 
 class WatchedElementDetailView(generic.DetailView):
@@ -16,4 +19,4 @@ class WatchedElementDetailView(generic.DetailView):
 
 
 class WatchedElementCreateView(generic.CreateView):
-    model = WatchedElement
+    pass

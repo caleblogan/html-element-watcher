@@ -1,0 +1,8 @@
+body {
+    margin: 0;
+}
+
+.watched-element {
+    border-left: 3px solid #5CB85C;
+    padding: 10px 0 10px 8px;
+}

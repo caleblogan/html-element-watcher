@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -19,6 +21,9 @@ class WatchedElement(models.Model):
 
     def get_absolute_url(self):
         return reverse('watcher:watched_element_detail', args=[str(self.id)])
+
+    def next_scheduled_update(self):
+        return self.last_checked + datetime.timedelta(hours=self.check_interval_days)
 
     def __str__(self):
         return f'{self.user} ({self.html_element})'

@@ -1,1 +1,21 @@
 {% extends 'base.html' %}
+
+{% block content %}
+<h1>Watched Elements</h1>
+<hr>
+{% for element in watched_elements %}
+
+  <ul class="list-unstyled">
+    <li class="watched-element">
+      <h5>
+        {{ element.url }}
+      </h5>
+      <p>Next update: {{ element.next_scheduled_update }}</p>
+      <p>Xpath: {{ element.html_element }} </p>
+      <p>Value: {{ element.element_value}} </p>
+    </li>
+    <hr>
+  </ul>
+
+{% endfor %}
+{% endblock content %}

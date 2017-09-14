@@ -10,6 +10,8 @@ from django.contrib.sites.models import Site
 
 from allauth.socialaccount.models import SocialApp, SocialAccount, SocialToken
 
+from ..models import WatchedElement
+
 
 class TestHomeView(TestCase):
 
@@ -31,3 +33,15 @@ class TestHomeView(TestCase):
         login = self.client.login(username='test_user1', password='nice_pass')
         resp = self.client.get('/')
         self.assertEqual(resp.status_code, 200)
+
+    def test_context_watched_tasks(self):
+        WatchedElement.objects.create(
+            user=self.user1,
+            url='http://127.0.0.1',
+            html_element='tag',
+            callback_url='http://localhost:8000/cb/'
+        )
+        login = self.client.login(username='test_user1', password='nice_pass')
+        resp = self.client.get('/')
+        self.assertIn('watched_elements', resp.context)
+        self.assertEqual(len(resp.context['watched_elements']), 1)
