@@ -16,3 +16,10 @@ DATABASES = {
     }
 }
 
+
+CELERY_BROKER_URL = 'amqp://{user}:{password}@{hostname}:{port}/'.format(
+    user='guest',
+    password='guest',
+    hostname='192.168.99.100',
+    port='5672',
+)

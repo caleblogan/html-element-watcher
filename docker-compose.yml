@@ -10,20 +10,20 @@ services:
       - PGDATA=/var/lib/postgresql/data/watcher/
     volumes:
       - /opt/starter/psql/watcher:/var/lib/postgresql/data/watcher/
-
-#    hostname: rabbit
-#    image: rabbitmq:3-management
-#    ports:
-#      - "5672:5672"
-#      - "15672:15672"
-#  worker:
-#    build: .
-#    command: celery -A twitter_site worker -l info
-#    volumes:
-#      - .:/code
-#    environment:
-#      - RABBITMQ_HOSTNAME=rabbit
-#    links:
-#      - rabbit
-#    depends_on:
-#      - rabbit
+  rabbit:
+    hostname: rabbit
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  worker:
+    build: .
+    command: celery -A config worker -l info --workdir ./element_watch/
+    volumes:
+      - .:/code
+    environment:
+      - RABBITMQ_HOSTNAME=rabbit
+    links:
+      - rabbit
+    depends_on:
+      - rabbit

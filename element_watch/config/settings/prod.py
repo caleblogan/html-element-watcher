@@ -1,0 +1,7 @@
+from .base import *
+
+
+DEBUG = False
+
+CELERY_BROKER_READ_URL = os.environ['RABBITMQ_BIGWIG_RX_URL']
+CELERY_BROKER_WRITE_URL = os.environ['RABBITMQ_BIGWIG_TX_URL']
