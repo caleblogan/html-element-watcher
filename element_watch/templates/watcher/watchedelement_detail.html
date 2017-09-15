@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Watched Element</h1>
+<hr>
+
+<h5>
+  {{ object.url }}
+</h5>
+<p>Next update: {{ object.next_scheduled_update }}</p>
+<p>Xpath: {{ object.html_element }} </p>
+<p>Value: {{ object.element_value}} </p>
+
+{% endblock content %}

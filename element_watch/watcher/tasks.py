@@ -2,5 +2,6 @@ from celery import shared_task
 
 
 @shared_task
-def add(x, y):
-    return x + y
+def check_html_element_task(watchelement_id):
+    print('nice nice')
+    print('id:', watchelement_id)
