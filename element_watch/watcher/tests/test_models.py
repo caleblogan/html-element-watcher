@@ -34,5 +34,5 @@ class TestWatchedElement(TestCase):
     def test_next_scheduled_update(self):
         elem = WatchedElement.objects.all()[0]
         elem.last_checked = timezone.now() - timedelta(minutes=10)
-        expected = elem.last_checked + timedelta(hours=elem.check_interval_days)
+        expected = elem.last_checked + timedelta(hours=elem.check_interval_hours)
         self.assertEqual(elem.next_scheduled_update(), expected)
