@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+sys.path.insert(0, os.path.join(BASE_DIR, 'element_watch'))
+
 
 
 # Quick-start development settings - unsuitable for production
