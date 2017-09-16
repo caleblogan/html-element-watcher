@@ -1,3 +1,5 @@
+import datetime
+
 from django.utils import timezone
 
 import requests
@@ -23,6 +25,11 @@ def check_html_element_task(watched_element_id):
         pass
     finally:
         watched_element.last_checked = timezone.now()
+        task = check_html_element_task.apply_async(
+            (watched_element.id,),
+            eta=timezone.now() + datetime.timedelta(hours=watched_element.check_interval_hours)
+        )
+        watched_element.cur_task_id = task.id
         watched_element.save()
 
 

@@ -29,29 +29,37 @@ class TestCheckHtmlElementTask(TestCase):
             last_checked=timezone.now() - datetime.timedelta(minutes=30),
         )
 
+    @mock.patch('watcher.tasks.check_html_element_task.apply_async')
     @responses.activate
-    def test_requests_called_with_correct_url(self):
+    def test_requests_called_with_correct_url(self, mock_async):
+        mock_async.return_value.id = '123'
         responses.add(responses.GET, self.watched_element.url, status=200)
 
         check_html_element_task(self.watched_element.id)
         self.assertEqual(responses.calls[0].request.url, self.watched_element.url)
 
+    @mock.patch('watcher.tasks.check_html_element_task.apply_async')
     @responses.activate
-    def test_sets_last_checked_to_now(self):
+    def test_sets_last_checked_to_now(self, mock_async):
+        mock_async.return_value.id = '123'
         responses.add(responses.GET, self.watched_element.url, status=200)
 
         check_html_element_task(self.watched_element.id)
         elem = WatchedElement.objects.get(pk=self.watched_element.id)
         self.assertIs(timezone.now() - elem.last_checked < datetime.timedelta(seconds=30), True)
 
+    @mock.patch('watcher.tasks.check_html_element_task.apply_async')
     @responses.activate
-    def test_sets_last_checked_to_now_on_errors(self):
+    def test_sets_last_checked_to_now_on_errors(self, mock_async):
+        mock_async.return_value.id = '123'
         check_html_element_task(self.watched_element.id)
         elem = WatchedElement.objects.get(pk=self.watched_element.id)
         self.assertIs(timezone.now() - elem.last_checked < datetime.timedelta(seconds=30), True)
 
+    @mock.patch('watcher.tasks.check_html_element_task.apply_async')
     @responses.activate
-    def test_new_element_value_saved(self):
+    def test_new_element_value_saved(self, mock_async):
+        mock_async.return_value.id = '123'
         html = """
             <div class="midcol unvoted">
                 <div class="arrow up login-required access-required" data-event-action="upvote" role="button" aria-label="upvote" tabindex="0">
@@ -72,8 +80,10 @@ class TestCheckHtmlElementTask(TestCase):
         elem = WatchedElement.objects.get(pk=self.watched_element.id)
         self.assertEqual(elem.element_value, '37.2k')
 
+    @mock.patch('watcher.tasks.check_html_element_task.apply_async')
     @responses.activate
-    def test_callback_url_called_with_data(self):
+    def test_callback_url_called_with_data(self, mock_async):
+        mock_async.return_value.id = '123'
         responses.add(responses.GET, self.watched_element.url, status=200, body='<div class="likes">nice</div>')
         responses.add(responses.POST, self.watched_element.callback_url, status=200)
 
@@ -82,8 +92,10 @@ class TestCheckHtmlElementTask(TestCase):
         self.assertEqual(responses.calls[1].request.url, self.watched_element.callback_url)
         self.assertEqual(responses.calls[1].request.body, 'new_value=nice')
 
+    @mock.patch('watcher.tasks.check_html_element_task.apply_async')
     @responses.activate
-    def test_callback_url_not_called_if_data_has_not_changed(self):
+    def test_callback_url_not_called_if_data_has_not_changed(self, mock_async):
+        mock_async.return_value.id = '123'
         responses.add(responses.GET, self.watched_element.url, status=200, body='<div class="likes">nice</div>')
         responses.add(responses.POST, self.watched_element.callback_url, status=200)
         self.watched_element.element_value = 'nice'
@@ -92,3 +104,15 @@ class TestCheckHtmlElementTask(TestCase):
         check_html_element_task(self.watched_element.id)
         elem = WatchedElement.objects.get(pk=self.watched_element.id)
         self.assertEqual(len(responses.calls), 1)
+
+    @mock.patch('watcher.tasks.check_html_element_task.apply_async')
+    @responses.activate
+    def test_schedule_task_again_by_interval_hours(self, mock_async):
+        mock_async.return_value.id = '123'
+        responses.add(responses.GET, self.watched_element.url, status=200, body='<div class="likes">nice</div>')
+        responses.add(responses.POST, self.watched_element.callback_url, status=200)
+
+        check_html_element_task(self.watched_element.id)
+        elem = WatchedElement.objects.get(pk=self.watched_element.id)
+        self.assertEqual(elem.cur_task_id, '123')
+
