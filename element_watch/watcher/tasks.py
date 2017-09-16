@@ -19,7 +19,7 @@ def check_html_element_task(watched_element_id):
         soup = BeautifulSoup(resp.text, 'html.parser')
         selected_elems = soup.select(watched_element.html_element)
         if len(selected_elems) > 0:
-            element_value = ''.join(selected_elems[0].contents)
+            element_value = ''.join([str(elem) for elem in selected_elems[0].contents])
             last_value = watched_element.element_value
             watched_element.element_value = element_value
             if last_value != element_value:
@@ -40,4 +40,7 @@ if __name__ == '__main__':
     resp = requests.get('https://www.reddit.com/r/all/', headers={'User-agent': 'Mozman'})
     print(resp.status_code)
     soup = BeautifulSoup(resp.text, 'html.parser')
-    print(soup.select('#siteTable > div:nth-of-type(1) .likes')[0].contents)
+    selected_elems = soup.select('#siteTable > div:nth-of-type(1)')
+
+    element_value = ''.join([str(elem) for elem in selected_elems[0].contents])
+    print(element_value)
