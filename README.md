@@ -2,7 +2,8 @@
 Django web app for watching html elements on a web page. Add an element
 you want to watch using a css selector, the interval time, and a callback
 url that will be called when the elements value has changed. Authenticate
-with django default accounts of twitter using django-all-auth
+with django default accounts of twitter using django-all-auth. Demo site:
+https://murmuring-wave-93908.herokuapp.com/
 
 # Setup
 - clone repo
