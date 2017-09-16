@@ -1,8 +1,13 @@
 body {
     margin: 0;
+    padding-top:40px;
 }
 
 .watched-element {
     border-left: 3px solid #5CB85C;
     padding: 10px 0 10px 8px;
+}
+
+.side-bar {
+    margin-top: 50px;
 }

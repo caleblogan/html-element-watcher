@@ -44,7 +44,7 @@ class WatchedElementCreateView(LoginRequiredMixin, generic.CreateView):
 class WatchedElementUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = WatchedElement
     fields = ['url', 'html_element', 'check_interval_hours', 'callback_url']
-    template_name = 'watcher/watchedelement_create_form.html'
+    template_name = 'watcher/watchedelement_update_form.html'
     success_url = reverse_lazy('watcher:home')
 
     def form_valid(self, form):

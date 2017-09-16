@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     # all-auth
     'django.contrib.sites',
     'allauth',
@@ -125,5 +126,7 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 CELERY_TIMEZONE = TIME_ZONE

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   {% block title %}<title>Element Watcher</title>{% endblock %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +24,7 @@
       {% block sidebar %}
         <ul class="text-center side-bar list-unstyled">
           <li><a href="{% url 'watcher:home' %}">home</a></li>
-          <li><a href="https://github.com/caleblogan/twitter-scheduler">github</a></li>
+          <li><a href="https://github.com/caleblogan/html-element-watcher">github</a></li>
           <hr/>
         {% if user.is_authenticated %}
           <li class=""><p>{{ user }}</p></li>
