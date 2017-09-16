@@ -5,6 +5,8 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 DEBUG = os.environ.get('DJANGO_DEBUG', False)
 
+ALLOWED_HOSTS += ['murmuring-wave-93908.herokuapp.com']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
