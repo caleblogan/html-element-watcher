@@ -1,13 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import WatchedElement
 from .tasks import check_html_element_task
+from config import celery_app
 
 
 @login_required
@@ -39,3 +41,20 @@ class WatchedElementCreateView(LoginRequiredMixin, generic.CreateView):
         return super().form_valid(form)
 
 
+class WatchedElementUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = WatchedElement
+    fields = ['url', 'html_element', 'check_interval_hours', 'callback_url']
+    template_name = 'watcher/watchedelement_create_form.html'
+    success_url = reverse_lazy('watcher:home')
+
+    def form_valid(self, form):
+        celery_app.control.revoke(form.instance.cur_task_id)
+        task = check_html_element_task.delay(form.instance.id)
+        form.instance.cur_task_id = task.id
+        return super().form_valid(form)
+
+
+@csrf_exempt
+def cb_test(request):
+    print('cb info:', request.POST)
+    return JsonResponse({'status': 'success'})

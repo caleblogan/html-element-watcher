@@ -11,7 +11,7 @@ class WatchedElement(models.Model):
     url = models.URLField()
     html_element = models.CharField(max_length=200)
     element_value = models.TextField(blank=True, null=True)
-    check_interval_hours = models.IntegerField(default=1, help_text='The interval to check html element in days.')
+    check_interval_hours = models.FloatField(default=1.0, help_text='The interval to check html element in hours.')
     cur_task_id = models.CharField(max_length=36, null=True, blank=True)
     callback_url = models.URLField()
     last_checked = models.DateTimeField(

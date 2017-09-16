@@ -9,6 +9,7 @@
     <li class="watched-element">
       <h5>
         {{ element.url }}
+        <a href="{% url 'watcher:watched_element_update' element.id %}">edit</a>
       </h5>
       <p>Next update: {{ element.next_scheduled_update }}</p>
       <p>Xpath: {{ element.html_element }} </p>
